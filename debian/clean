@@ -1,0 +1,13 @@
+Headers/Additions/GNUstepGUI/GSVersion.h
+Source/Info-gnustep.plist
+debian/gnustep-gui-common.install
+debian/libgnustep-gui0.*.lintian-overrides
+Documentation/version.texi
+debian/gnustep-gui-doc.install
+debian/gnustep-gui-runtime.install
+debian/gnustep-gui-runtime.links
+debian/libgnustep-gui0.*.install
+debian/libgnustep-gui-dev.install
+
+debian/libgnustep-gui0.*.maintscript
+debian/libgnustep-gui0.*.docs

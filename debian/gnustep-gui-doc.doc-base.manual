@@ -1,0 +1,15 @@
+Document: gnustep-gui-programming-manual
+Title: GNUstep GUI Library Programming Manual
+Author: Christopher Armstrong
+Abstract: This manual documents some configuration and installation
+ issues with the GNUstep  GUI Library and also differences between the
+ GUI Library and libraries that implement the OpenStep AppKit
+ specification and the MacOS X AppKit implementation.
+Section: Programming/Objective-C
+
+Format: HTML
+Index: /usr/share/doc/gnustep-gui-doc/Gui/ProgrammingManual/AppKit/index.html
+Files: /usr/share/doc/gnustep-gui-doc/Gui/ProgrammingManual/AppKit/*.html
+
+Format: PDF
+Files: /usr/share/doc/gnustep-gui-doc/Gui/ProgrammingManual/AppKit.pdf

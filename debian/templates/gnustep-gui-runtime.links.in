@@ -1,0 +1,8 @@
+# Link images from /usr/lib to /usr/share
+@GS_USRSHARE@/ColorPickers/GSNamedColorPicker.tiff	@GS_LIBRARY@/ColorPickers/NamedPicker.bundle/Resources/GSNamedColorPicker.tiff
+@GS_USRSHARE@/ColorPickers/GSCMYKColorPicker.tiff	@GS_LIBRARY@/ColorPickers/StandardPicker.bundle/Resources/GSCMYKColorPicker.tiff
+@GS_USRSHARE@/ColorPickers/GSGrayColorPicker.tiff	@GS_LIBRARY@/ColorPickers/StandardPicker.bundle/Resources/GSGrayColorPicker.tiff
+@GS_USRSHARE@/ColorPickers/GSHSBColorPicker.tiff	@GS_LIBRARY@/ColorPickers/StandardPicker.bundle/Resources/GSHSBColorPicker.tiff
+@GS_USRSHARE@/ColorPickers/GSRGBColorPicker.tiff	@GS_LIBRARY@/ColorPickers/StandardPicker.bundle/Resources/GSRGBColorPicker.tiff
+@GS_USRSHARE@/ColorPickers/GSWheelColorPicker.tiff	@GS_LIBRARY@/ColorPickers/WheelPicker.bundle/Resources/GSWheelColorPicker.tiff
+

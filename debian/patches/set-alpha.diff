@@ -1,0 +1,21 @@
+Description: Fix a problem where QueryColorDatabase not found
+ It's removed in imagemagick7, but we can set the PixelInfo manually
+Author: April Lu <apr3vau@outlook.com>
+---
+Origin: vendor
+Forwarded: no
+Last-Update: 2025-07-03
+
+--- gnustep-gui-0.29.0.orig/Source/GSImageMagickImageRep.m
++++ gnustep-gui-0.29.0/Source/GSImageMagickImageRep.m
+@@ -121,7 +121,9 @@
+   
+   // Set the background color to transparent
+   // (otherwise SVG's are rendered against a white background by default)
+-  QueryColorDatabase("none", &imageinfo->background_color, exception);
++  // QueryColorDatabase("none", &imageinfo->background_color, exception);
++  PixelInfo info = { .red = 0, .green = 0, .blue = 0, .alpha = 0 };
++  imageinfo->background_color = info;
+ 
+   images = BlobToImage(imageinfo, [data bytes], [data length], exception);
+ 

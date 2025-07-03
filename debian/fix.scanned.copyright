@@ -1,0 +1,4 @@
+! Files:~/^Source/ Copyright=~s/\.<\/copy>*//
+! Files:~/^Headers/ Copyright=~s/\.<\/copy>*//
+! Files:~/^Tests/ Copyright=~s/.on.18\.07\.11.*//
+! Files:~/.*/ Copyright=~s/2105/2015/

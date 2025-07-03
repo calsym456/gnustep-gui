@@ -1,0 +1,33 @@
+Description: Correct the use of MagickCore API
+ Maybe for imagemagic v7 change...
+Author: April Lu <apr3vau@outlook.com>
+---
+Origin: vendor
+Forwarded: no
+Last-Update: 2025-07-03
+
+--- gnustep-gui-0.29.0.orig/Source/GSImageMagickImageRep.m
++++ gnustep-gui-0.29.0/Source/GSImageMagickImageRep.m
+@@ -43,7 +43,7 @@
+ 
+ #if HAVE_IMAGEMAGICK
+ 
+-#include <magick/MagickCore.h>
++#include <MagickCore/MagickCore.h>
+ 
+ @implementation GSImageMagickImageRep 
+ 
+@@ -82,11 +82,11 @@
+       NSSize res;
+       if (image->units == PixelsPerCentimeterResolution)
+ 	{
+-	  res = NSMakeSize(image->x_resolution * 2.54, image->y_resolution * 2.54);
++	  res = NSMakeSize(image->resolution.x * 2.54, image->resolution.y * 2.54);
+ 	}
+       else
+ 	{
+-	  res = NSMakeSize(image->x_resolution, image->y_resolution);
++	  res = NSMakeSize(image->resolution.x, image->resolution.y);
+ 	}
+ 
+       if (res.width > 0 && res.height > 0)

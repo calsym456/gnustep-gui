@@ -1,0 +1,13 @@
+# Install images
+@GS_LIBRARY@/Images/*	@DEB_GS_PIXMAPS@/
+
+# Install sounds
+@GS_LIBRARY@/Sounds/*   @DEB_GS_SOUNDS@/
+
+# Install arch-indep stuff
+@GS_LIBRARY@/KeyBindings/*	@DEB_GS_USRSHARE@/KeyBindings/
+@GS_LIBRARY@/Libraries/*	@DEB_GS_USRSHARE@/Libraries/
+@GS_LIBRARY@/PostScript/*	@DEB_GS_USRSHARE@/PostScript/
+
+# Manpages
+usr/share/man

@@ -1,0 +1,41 @@
+---
+check:
+  pattern:
+  - '[Mm]akefile'
+  - Documentation/
+  - debian/
+  - configure
+  - Tests/gui/NSSavePanel/dummy/[AB]
+  suffixes:
+  - h
+  - m
+  - y
+  - make
+  - info
+  - in
+  - m4
+  - gorm
+  - classes
+  - dict
+  - strings
+  - plist
+  - gmodel
+  - svg
+  - top
+  - ps
+  - ppd
+ignore:
+  pattern:
+  - debian/.*\.yml
+  - ChangeLog
+  - BUGS
+  - COPYING
+  - ANNOUNCE
+  - NEWS
+  - README
+  - INSTALL
+  - Version
+  suffixes:
+  - wav
+  - tiff
+  - nib

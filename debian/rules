@@ -1,4 +1,183 @@
 #!/usr/bin/make -f
+#export DH_VERBOSE = 1
+
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+export DEB_LDFLAGS_MAINT_APPEND = -Wl,--no-undefined
+
+# config.mk is provided by gnustep-make package
+include /usr/share/GNUstep/debian/config.mk
+
+# Install in debian/tmp
+export DESTDIR=$(CURDIR)/debian/tmp
+
+##### VERSION NUMBERS ###########################################
+
+# GNUstep Base version :
+v_base  := 1.28
+
+# GNUstep Gui/Back version :
+v_gui   := $(shell . ./Version; echo $$VERSION)
+
+# GNUstep Gui/Back SONAME version :
+sov_gui := $(shell . ./Version; echo $$GNUSTEP_GUI_MAJOR_VERSION.$$GNUSTEP_GUI_MINOR_VERSION)
+
+#### PACKAGES NAMES ###################################
+p_com           = gnustep-gui-common
+p_run           = gnustep-gui-runtime
+p_lib           = libgnustep-gui$(sov_gui)
+p_dev           = libgnustep-gui-dev
+p_doc           = gnustep-gui-doc
+
+### DIRS ##############################################
+
+DEBIAN_GNUSTEP_PIXMAPS	= usr/share/pixmaps/GNUstep
+DEBIAN_GNUSTEP_SOUNDS	= usr/share/sounds/GNUstep
+DEBIAN_GNUSTEP_USRSHARE	= usr/share/GNUstep
+
+######################################################
 
 %:
 	dh $@
+
+# Ensure that debian/control is always up-to-date.
+override_dh_testdir:
+	m4 \
+	    -DV_BASE='$(v_base)' \
+	    -DV_GUI='$(v_gui)' \
+	    -DSOV_GUI='$(sov_gui)' \
+	    debian/templates/control.m4 > debian/control
+	dh_testdir
+
+override_dh_auto_configure:
+# Generate the lintian overrides file automatically, to avoid renames
+# when the SONAME is bumped.
+	m4 \
+	    -DSOV_GUI='$(sov_gui)' \
+	  debian/templates/libgnustep-guiN.overrides.m4 > debian/libgnustep-gui$(sov_gui).lintian-overrides
+
+# generate gnustep-gui-common.install file
+	sed -e 's,@GS_LIBRARY@,$(GNUSTEP_SYSTEM_LIBRARY),g' \
+	    -e 's,@DEB_GS_PIXMAPS@,$(DEBIAN_GNUSTEP_PIXMAPS),g' \
+	    -e 's,@DEB_GS_SOUNDS@,$(DEBIAN_GNUSTEP_SOUNDS),g' \
+	    -e 's,@DEB_GS_USRSHARE@,$(DEBIAN_GNUSTEP_USRSHARE),g' \
+	    debian/templates/$(p_com).install.in > debian/$(p_com).install
+
+# generate gnustep-gui-doc.install file
+	sed -e 's,@GS_DOC@,$(GNUSTEP_SYSTEM_DOC),g' \
+	    -e 's,@GS_INFO@,$(GNUSTEP_SYSTEM_DOC_INFO),g' \
+	    debian/templates/$(p_doc).install.in > debian/$(p_doc).install
+
+# generate gnustep-gui-runtime.install file
+	sed -e 's,@GS_TOOLS@,$(GNUSTEP_SYSTEM_TOOLS),g' \
+	    -e 's,@GS_APPS@,$(GNUSTEP_SYSTEM_APPS),g' \
+	    -e 's,@GS_LIBRARY@,$(GNUSTEP_SYSTEM_LIBRARY),g' \
+	    -e 's,@GS_USRSHARE@,$(DEBIAN_GNUSTEP_USRSHARE),g' \
+	    debian/templates/$(p_run).install.in > debian/$(p_run).install
+
+# generate gnustep-gui-runtime.links file
+	sed -e 's,@GS_LIBRARY@,$(GNUSTEP_SYSTEM_LIBRARY),g' \
+	    -e 's,@GS_USRSHARE@,$(DEBIAN_GNUSTEP_USRSHARE),g' \
+	    debian/templates/$(p_run).links.in > debian/$(p_run).links;
+
+# generate libgnustep-guiN.install file
+	sed -e 's,@GS_LIBS@,$(GNUSTEP_SYSTEM_LIBRARIES),g' \
+	    debian/templates/libgnustep-guiN.install.in > debian/$(p_lib).install
+
+# generate libgnustep-guiN.maintscript file
+	sed -e 's,@SOV_GUI@,$(sov_gui),g' \
+	    debian/templates/libgnustep-guiN.maintscript.in > debian/$(p_lib).maintscript
+
+# generate libgnustep-guiN.docs file
+	sed -e 's,@GS_LIBS@,$(GNUSTEP_SYSTEM_LIBRARIES),g' \
+	    debian/templates/libgnustep-guiN.docs.in > debian/$(p_lib).docs
+
+# generate libgnustep-gui-dev.install file
+	sed -e 's,@GS_HEADERS@,$(GNUSTEP_SYSTEM_HEADERS),g' \
+	    -e 's,@GS_LIBS@,$(GNUSTEP_SYSTEM_LIBRARIES),g' \
+	    -e 's,@GS_MAKEFILES@,$(GNUSTEP_MAKEFILES),g' \
+	    debian/templates/$(p_dev).install.in > debian/$(p_dev).install
+
+	dh_auto_configure -- \
+	    --disable-icu-config \
+	    --enable-imagemagick
+
+override_dh_auto_build-arch:
+# build shared libs
+	dh_auto_build -- \
+	    $(verbose) \
+	    $(optim) \
+	    doc=no \
+	    $(shell dpkg-buildflags --export=cmdline)
+
+# build dev/static lib
+	dh_auto_build -- \
+	    -C Source \
+	    $(verbose) \
+	    doc=no \
+	    shared=no
+
+override_dh_auto_build-indep:
+# build shared libs
+	dh_auto_build -- \
+	    $(verbose) \
+	    doc=no
+
+# build main doc. Make sure autogsdoc can find the libraries.
+	dh_auto_build -- \
+	    -C Documentation \
+	    message=yes \
+	    doc=yes
+
+override_dh_auto_test:
+	dh_auto_test || (cat Tests/tests.log; exit 1)
+
+override_dh_auto_install-arch:
+# install shared version of libraries
+	dh_auto_install -- \
+	    doc=no
+
+# install dev/static lib
+	dh_auto_install -- \
+	    -C Source \
+	    doc=no \
+	    shared=no
+
+override_dh_auto_install-indep:
+# install shared version of libraries
+	dh_auto_install -- \
+	    doc=no
+
+# install doc
+	dh_auto_install -- \
+	    -C Documentation \
+	    doc=yes
+# Delete duplicate files already shipped at /usr/share/doc/.
+	$(RM) -r debian/tmp$(GNUSTEP_SYSTEM_DOC)/Developer/Gui/ReleaseNotes/0.*
+
+override_dh_auto_clean-indep:
+	dh_auto_clean -- \
+	    doc=yes
+
+override_dh_install:
+# Don't install stamp.make file
+	find -name stamp.make -delete
+	dh_install
+
+# Doc symlinks
+override_dh_installdocs:
+	dh_installdocs -p$(p_run) --link-doc=$(p_lib)
+	dh_installdocs -p$(p_dev) --link-doc=$(p_lib)
+	dh_installdocs --remaining-packages
+
+override_dh_fixperms:
+# Fix .desktop files permissions
+	find debian -name "*.desktop" -perm 0755 -exec chmod -v 0644 {} \;
+	dh_fixperms
+
+override_dh_shlibdeps:
+# First calculate shlib dependencies of all -gui packages
+	dh_shlibdeps
+
+# Then recalculate dependencies of shared lib
+	dh_makeshlibs -p$(p_lib) \
+	    -V '$(p_lib) (>= $(v_gui)), gnustep-gui-runtime (>= $(v_gui)), gnustep-back$(sov_gui) (>= $(v_gui))'

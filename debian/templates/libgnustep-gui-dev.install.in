@@ -1,0 +1,12 @@
+# Install headers
+@GS_HEADERS@/*
+
+# Install development symlink
+@GS_LIBS@/libgnustep-gui.so
+
+# Instal static/dev lib
+@GS_LIBS@/libgnustep-gui.a
+
+# Install additional makefiles
+@GS_MAKEFILES@/Additional/*
+

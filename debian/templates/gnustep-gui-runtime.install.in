@@ -1,0 +1,24 @@
+# Install tools
+@GS_TOOLS@/*
+
+# Install applications
+@GS_APPS@/*
+
+# Install bunbles
+@GS_LIBRARY@/Bundles/*
+
+# Install services
+@GS_LIBRARY@/Services/*
+
+# Install ColorPickers (except *.tiff)
+@GS_LIBRARY@/ColorPickers/WheelPicker.bundle/WheelPicker
+@GS_LIBRARY@/ColorPickers/WheelPicker.bundle/Resources/*.plist
+@GS_LIBRARY@/ColorPickers/StandardPicker.bundle/StandardPicker
+@GS_LIBRARY@/ColorPickers/StandardPicker.bundle/Resources/*.plist
+@GS_LIBRARY@/ColorPickers/StandardPicker.bundle/Resources/*.lproj
+@GS_LIBRARY@/ColorPickers/NamedPicker.bundle/NamedPicker
+@GS_LIBRARY@/ColorPickers/NamedPicker.bundle/Resources/*.plist
+
+# Install ColorPickers *.tiff in /usr/share subdir
+@GS_LIBRARY@/ColorPickers/*.bundle/Resources/*.tiff	@GS_USRSHARE@/ColorPickers/
+

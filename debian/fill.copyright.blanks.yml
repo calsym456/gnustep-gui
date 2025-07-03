@@ -1,0 +1,29 @@
+---
+.*:
+  comment: According to README file, the GNUstep libraries and library resources are
+    covered under the GNU Lesser Public License.
+  copyright: 1995-2015, Free Software Foundation, Inc
+  license: LGPL-2+
+  skip: '0'
+Documentation/manual/:
+  comment: According to Documentation/manual/README file, this documentation is licenced
+    under the GNU Free Documentation License Version 1.2.
+  copyright: 2005, 2006, Christopher Armstrong
+  license: GFDL-NIV-1.2
+Documentation/manual/manual.texi:
+  skip: '1'
+Tests/*:
+  comment: According to README file, GNUstep tools, test programs, and other files
+    are covered under the GNU General Public License.
+  copyright: 1995-2015, Free Software Foundation, Inc
+  license: GPL-3+
+  skip: '0'
+Tools/*:
+  comment: According to README file, GNUstep tools, test programs, and other files
+    are covered under the GNU General Public License.
+  copyright: 1995-2015, Free Software Foundation, Inc
+  license: GPL-3+
+  skip: '0'
+debian/*:
+  copyright: 1998-2016 Debian GNUstep maintainers <pkg-gnustep-maintainers@lists.alioth.debian.org>
+  license: LGPL-3+

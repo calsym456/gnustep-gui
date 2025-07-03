@@ -1,0 +1,114 @@
+# -*-debian-control-*-
+# NOTE: debian/control is generated from debian/templates/control.m4
+Source: gnustep-gui
+Maintainer: Debian GNUstep maintainers <pkg-gnustep-maintainers@lists.alioth.debian.org>
+Uploaders: Eric Heintzmann <heintzmann.eric@free.fr>,
+           Gürkan Myczko <tar@debian.org>,
+           Yavor Doganov <yavor@gnu.org>
+Section: gnustep
+Priority: optional
+Build-Depends: debhelper-compat (= 13),
+               m4,
+               libgnustep-base-dev (>= V_BASE),
+               libicns-dev,
+               libjpeg-dev,
+               libtiff-dev,
+               libpng-dev,
+               libgif-dev,
+               libmagickcore-dev,
+               libicu-dev,
+               libaspell-dev,
+               zlib1g-dev,
+               libcups2-dev,
+               libao-dev,
+# Exclude architectures where pocketsphinx is not available.
+               libpocketsphinx-dev [!mips64el !mipsel !s390x !alpha !hppa !ia64 !m68k !powerpc !ppc64 !sparc64],
+               libsndfile1-dev,
+               flite1-dev
+Build-Depends-Indep: texinfo,
+                     texlive-base,
+                     texlive-latex-base,
+                     gnustep-base-doc
+Rules-Requires-Root: no
+Standards-Version: 4.6.0
+Vcs-Browser: https://salsa.debian.org/gnustep-team/gnustep-gui
+Vcs-Git: https://salsa.debian.org/gnustep-team/gnustep-gui.git
+Homepage: http://gnustep.org
+
+Package: gnustep-gui-common
+Architecture: all
+Depends: gnustep-base-common (>= V_BASE),
+         ${misc:Depends}
+Description: GNUstep GUI Library - common files
+ The GNUstep GUI Library is a powerful library of graphical user interface
+ classes written completely in the Objective-C language; the classes are
+ based upon the OpenStep specification, and provide the user with a
+ traditional nextstep-like look and feel.
+ .
+ This package contains the common files needed by the GNUstep GUI library.
+
+Package: gnustep-gui-runtime
+Architecture: any
+Depends: gnustep-gui-common (= ${source:Version}),
+         ${shlibs:Depends},
+         ${misc:Depends}
+Description: GNUstep GUI Library - runtime files
+ The GNUstep GUI Library is a powerful library of graphical user interface
+ classes written completely in the Objective-C language; the classes are
+ based upon the OpenStep specification, and provide the user with a
+ traditional nextstep-like look and feel.
+ .
+ This package contains the runtime support files needed by GNUstep GUI
+ applications.
+
+Package: libgnustep-gui`'SOV_GUI
+Architecture: any
+Section: libs
+Depends: gnustep-gui-common (= ${source:Version}),
+         ${shlibs:Depends},
+         ${misc:Depends}
+Recommends: gnustep-gui-runtime (= ${binary:Version})
+Description: GNUstep GUI Library
+ The GNUstep GUI library is a powerful library of graphical user interface
+ classes written completely in the Objective-C language; the classes are
+ based upon the OpenStep specification, and provide the user with a
+ traditional nextstep-like look and feel.  The classes include graphical
+ objects such as windows, menus, buttons, text fields, popup lists, browsers,
+ scrollviews, splitviews, fonts, colors, images, events, pasteboards...
+ You need the corresponding backend library package (gnustep-back) to use
+ this package.
+
+Package: libgnustep-gui-dev
+Architecture: any
+Section: libdevel
+Depends: libgnustep-gui`'SOV_GUI (= ${binary:Version}),
+         gnustep-gui-runtime (= ${binary:Version}),
+         libgnustep-base-dev (>= V_BASE),
+         ${misc:Depends}
+Suggests: gnustep-gui-doc
+Description: GNUstep GUI header files and static libraries
+ The GNUstep GUI Library is a powerful library of graphical user interface
+ classes written completely in the Objective-C language; the classes are
+ based upon the OpenStep specification, and provide the user with a
+ traditional nextstep-like look and feel.
+ .
+ This package contains the header files and static libraries required
+ to build applications against the GNUstep GUI library.
+ .
+ Install this package if you wish to develop your own programs using
+ the GNUstep GUI Library.
+
+Package: gnustep-gui-doc
+Architecture: all
+Multi-Arch: foreign
+Section: doc
+Depends: ${misc:Depends}
+Recommends: gnustep-base-doc
+Description: Documentation for the GNUstep GUI Library
+ The GNUstep GUI Library is a powerful library of graphical user interface
+ classes written completely in the Objective-C language; the classes are
+ based upon the OpenStep specification, and provide the user with a
+ traditional nextstep-like look and feel.
+ .
+ This package contains text, gsdoc, PDF and HTML documentation for the
+ GNUstep GUI Library.
