@@ -43,7 +43,7 @@
 
 #if HAVE_IMAGEMAGICK
 
-#include <MagickCore/MagickCore.h>
+#include <magick/MagickCore.h>
 
 @implementation GSImageMagickImageRep 
 
@@ -82,11 +82,11 @@
       NSSize res;
       if (image->units == PixelsPerCentimeterResolution)
 	{
-	  res = NSMakeSize(image->resolution.x * 2.54, image->resolution.y * 2.54);
+	  res = NSMakeSize(image->x_resolution * 2.54, image->y_resolution * 2.54);
 	}
       else
 	{
-	  res = NSMakeSize(image->resolution.x, image->resolution.y);
+	  res = NSMakeSize(image->x_resolution, image->y_resolution);
 	}
 
       if (res.width > 0 && res.height > 0)
@@ -121,9 +121,7 @@
   
   // Set the background color to transparent
   // (otherwise SVG's are rendered against a white background by default)
-  // QueryColorDatabase("none", &imageinfo->background_color, exception);
-  PixelInfo info = { .red = 0, .green = 0, .blue = 0, .alpha = 0 };
-  imageinfo->background_color = info;
+  QueryColorDatabase("none", &imageinfo->background_color, exception);
 
   images = BlobToImage(imageinfo, [data bytes], [data length], exception);
 
